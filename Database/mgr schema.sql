@@ -1,11 +1,12 @@
-USE Core
+
 /* 
   Important Notes:
 	Though most of the conent is planned for an "mgr" schema, the type elements written here are useful enough to go to
 	the "dbo" or other generic use schema point. I have chosen "dbo".
-*/
+Create Schema mgr Authorization dbo
 
-CREATE TABLE dbo.AUser
+*/
+CREATE TABLE mgr.AUser
 (
 	UserID INT IDENTITY(1,1) PRIMARY KEY,
 	Username VARCHAR(25) NOT NULL,
@@ -14,7 +15,7 @@ CREATE TABLE dbo.AUser
 	CONSTRAINT UQ_Username UNIQUE(Username)
 )
 
-CREATE TABLE dbo.Claim
+CREATE TABLE mgr.Claim
 (
 	ClaimID INT IDENTITY(1,1) PRIMARY KEY,
 	ClaimName VARCHAR(25) NOT NULL,
@@ -23,7 +24,7 @@ CREATE TABLE dbo.Claim
 	CONSTRAINT UQ_ClaimNName UNIQUE(ClaimName)
 )
 
-CREATE TABLE dbo.ARole
+CREATE TABLE mgr.ARole
 (
 	RoleID INT IDENTITY(1,1) PRIMARY KEY,
 	RoleName VARCHAR(25) NOT NULL,
@@ -32,7 +33,7 @@ CREATE TABLE dbo.ARole
 	CONSTRAINT UQ_RoleName UNIQUE(RoleName)
 )
 
-CREATE TABLE dbo.AccessPoint
+CREATE TABLE mgr.AccessPoint
 (
 	APID INT IDENTITY(1,1) PRIMARY KEY,
 	AccessPointName VARCHAR(50) NOT NULL,
@@ -42,52 +43,52 @@ CREATE TABLE dbo.AccessPoint
 	CONSTRAINT UQ_AccessPointName UNIQUE(AccessPointName)
 )
 
-CREATE TABLE dbo.UserClaims
+CREATE TABLE mgr.UserClaims
 (
 	UserClaimID INT IDENTITY(1,1) PRIMARY KEY,
 	UserID INT NOT NULL,
 	ClaimID INT NOT NULL,
 	CreatedDate DATETIME DEFAULT GETDATE(),
 	CONSTRAINT FK_UserID FOREIGN KEY (UserID)
-	REFERENCES dbo.AUser(UserID),
+	REFERENCES mgr.AUser(UserID),
 	CONSTRAINT FK_ClaimID FOREIGN KEY (ClaimID)
-	REFERENCES dbo.Claim(ClaimID)
+	REFERENCES mgr.Claim(ClaimID)
 )
 
-CREATE TABLE dbo.ClaimsAccessPoints
+CREATE TABLE mgr.ClaimsAccessPoints
 (
 	ClaimAPID INT IDENTITY(1,1) PRIMARY KEY,
 	ClaimID INT NOT NULL,
 	APID INT NOT NULL,
 	CreatedDate DATETIME DEFAULT GETDATE(),
 	CONSTRAINT FK_ClaimIDAP FOREIGN KEY (ClaimID)
-	REFERENCES dbo.Claim(ClaimID),
+	REFERENCES mgr.Claim(ClaimID),
 	CONSTRAINT FK_APID FOREIGN KEY (APID)
-	REFERENCES dbo.AccessPoint(APID)
+	REFERENCES mgr.AccessPoint(APID)
 )
 
-CREATE TABLE dbo.RoleClaims
+CREATE TABLE mgr.RoleClaims
 (
 	RoleClaimID INT IDENTITY(1,1) PRIMARY KEY,
 	RoleID INT NOT NULL,
 	ClaimID INT NOT NULL,
 	CreatedDate DATETIME DEFAULT GETDATE(),
 	CONSTRAINT FK_RoleID FOREIGN KEY (RoleID)
-	REFERENCES dbo.ARole(RoleID),
-	CONSTRAINT FK_ClaimID FOREIGN KEY (ClaimID)
-	REFERENCES dbo.Claim(ClaimID)
+	REFERENCES mgr.ARole(RoleID),
+	CONSTRAINT FK_ClaimID_RC FOREIGN KEY (ClaimID)
+	REFERENCES mgr.Claim(ClaimID)
 )
 
 GO
 
 /* Types */
-CREATE TYPE dbo.ElementList
+CREATE TYPE mgr.ElementList
 AS TABLE
 (
 	ElementID INT
 )
 
-CREATE TYPE dbo.DictionaryGroup
+CREATE TYPE mgr.DictionaryGroup
 AS TABLE
 (
 	Part1ID INT,
@@ -98,7 +99,7 @@ AS TABLE
 GO
 
 /* Functions */
-CREATE FUNCTION dbo.FetchUserID
+CREATE FUNCTION mgr.FetchUserID
 (
 	@UserName AS VARCHAR(25)
 )
@@ -107,14 +108,14 @@ AS
 BEGIN
 	DECLARE @UserID AS INT
 	SELECT TOP 1 @UserID = UserID
-	FROM dbo.AUser
+	FROM mgr.AUser
 	WHERE UserName = @UserName
 	RETURN @UserID
 END
 GO	
 
 /* Procedures */
-CREATE PROCEDURE dbo.AddUser
+CREATE PROCEDURE mgr.AddUser
 (
 	@UserName VARCHAR(25),
 	@Password VARCHAR(25)
@@ -122,25 +123,25 @@ CREATE PROCEDURE dbo.AddUser
 AS
 BEGIN
 	/* has a direct output of the ID created, Use EXECUTE SCALAR From Code. */
-	INSERT INTO dbo.AUSER
+	INSERT INTO mgr.AUSER
 		(UserName, Password)
 		OUTPUT INSERTED.UserID
 	VALUES (@UserName, @Password)
 END
 GO
 
-CREATE PROCEDURE dbo.DeleteUser
+CREATE PROCEDURE mgr.DeleteUser
 (
 	@UserID INT
 )
 AS
 BEGIN
-	DELETE FROM dbo.AUSER
+	DELETE FROM mgr.AUSER
 	WHERE UserID = @UserID
 END
 GO
 
-CREATE PROCEDURE dbo.AddClaim
+CREATE PROCEDURE mgr.AddClaim
 (
 	@ClaimName VARCHAR(50),
 	@ClaimDescription VARCHAR(250) = NULL
@@ -148,7 +149,7 @@ CREATE PROCEDURE dbo.AddClaim
 AS
 BEGIN
 	/* has a direct output of the ID created, Use EXECUTE SCALAR From Code. */
-	INSERT INTO dbo.Claim
+	INSERT INTO mgr.Claim
 		(ClaimName, ClaimDescription)
 		OUTPUT INSERTED.ClaimID
 	VALUES(@ClaimName, @ClaimDescription)
@@ -156,18 +157,18 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.DeleteClaim
+CREATE PROCEDURE mgr.DeleteClaim
 (
 	@ClaimID INT
 )
 AS
 BEGIN
-	DELETE FROM dbo.Claim
+	DELETE FROM mgr.Claim
 	WHERE ClaimID = @ClaimID
 END
 GO
 
-CREATE PROCEDURE dbo.AddRole
+CREATE PROCEDURE mgr.AddRole
 (
 	@RoleName VARCHAR(25),
 	@RoleDescription VARCHAR(250) = NULL
@@ -175,25 +176,25 @@ CREATE PROCEDURE dbo.AddRole
 AS
 BEGIN
 	/* has a direct output of the ID created, Use EXECUTE SCALAR From Code. */
-	INSERT INTO dbo.ARole
+	INSERT INTO mgr.ARole
 		(RoleName, RoleDescription)
 		OUTPUT INSERTED.RoleID
 	VALUES(@RoleName, @RoleDescription)
 END
 GO
 
-CREATE PROCEDURE dbo.DeleteRole
+CREATE PROCEDURE mgr.DeleteRole
 (
 	@RoleID INT
 )
 AS
 BEGIN
-	DELETE FROM dbo.ARole
+	DELETE FROM mgr.ARole
 	WHERE RoleID = @RoleID
 END
 GO
 
-CREATE PROCEDURE dbo.AddAccessPoint
+CREATE PROCEDURE mgr.AddAccessPoint
 (
 	@AccessPointName VARCHAR(50),
 	@APDescription VARCHAR(250) = NULL,
@@ -202,7 +203,7 @@ CREATE PROCEDURE dbo.AddAccessPoint
 AS
 BEGIN
 	/* has a direct output of the ID created, Use EXECUTE SCALAR From Code. */
-	INSERT INTO dbo.AccessPoint
+	INSERT INTO mgr.AccessPoint
 		(AccessPointName, AccessPointDescription, APURL)
 		OUTPUT INSERTED.APID
 	VALUES(@AccessPointName, @APDescription, @APURL)
@@ -210,26 +211,26 @@ END
 
 GO
 
-CREATE PROCEDURE dbo.DeleteAccessPoint
+CREATE PROCEDURE mgr.DeleteAccessPoint
 (
 	@APID INT
 )
 AS
 BEGIN
-	DELETE FROM dbo.AccessPoint
+	DELETE FROM mgr.AccessPoint
 	WHERE APID = @APID
 END
 GO
 
-CREATE PROCEDURE dbo.GrantClaimsToUser
+CREATE PROCEDURE mgr.GrantClaimsToUser
 (
 	@UserName VARCHAR(25),
-	@CList as dbo.ElementList REadonly
+	@CList as mgr.ElementList REadonly
 )
 AS
 BEGIN
 	DECLARE @UserID as INT
-	SET @UserID = dbo.FetchUserID(@UserName)
+	SET @UserID = mgr.FetchUserID(@UserName)
 	
 	INSERT INTO UserClaims
 		(UserID, ClaimID)
@@ -246,22 +247,22 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.RemoveClaimsFromUser
+CREATE PROCEDURE mgr.RemoveClaimsFromUser
 (
 	@UserName VARCHAR(25),
-	@CList as dbo.ElementList REadonly
+	@CList as mgr.ElementList REadonly
 )
 AS
 BEGIN
 	DELETE UC FROM UserClaims UC
 	INNER JOIN @CList L
 	ON UC.ClaimID = L.ElementID
-	AND UC.ClaimID = dbo.FetchUserID(@UserName)
+	AND UC.ClaimID = mgr.FetchUserID(@UserName)
 	
 END
 GO
 
-CREATE PROCEDURE dbo.GrantAccessPointsToClaim
+CREATE PROCEDURE mgr.GrantAccessPointsToClaim
 (
 	@ClaimID AS INT,
 	@APList AS ElementList REadonly
@@ -284,7 +285,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.RemoveAccessPointsFromClaim
+CREATE PROCEDURE mgr.RemoveAccessPointsFromClaim
 (
 	@ClaimID AS INT,
 	@APList AS ElementList REadonly
@@ -298,7 +299,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.GrantClaimsToAccessPoint
+CREATE PROCEDURE mgr.GrantClaimsToAccessPoint
 (
 	@APID AS INT,
 	@CList AS ElementList REadonly
@@ -321,7 +322,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.RemoveClaimsFromAccessPoint
+CREATE PROCEDURE mgr.RemoveClaimsFromAccessPoint
 (
 	@APID AS INT,
 	@CList AS ElementList ReadOnly
@@ -335,7 +336,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.GrantClaimsToRole
+CREATE PROCEDURE mgr.GrantClaimsToRole
 (
 	@RoleID AS INT,
 	@CList AS ElementList ReadOnly
@@ -358,7 +359,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.RemoveClaimsFromRole
+CREATE PROCEDURE mgr.RemoveClaimsFromRole
 (
 	@RoleID AS INT,
 	@CList AS ElementList ReadOnly
@@ -373,7 +374,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.ApplyRoleToUser
+CREATE PROCEDURE mgr.ApplyRoleToUser
 (
 	@RoleID AS INT,
 	@UserName AS VARCHAR(25)
@@ -381,7 +382,7 @@ CREATE PROCEDURE dbo.ApplyRoleToUser
 AS
 BEGIN
 	DECLARE @UserID AS INT
-	SELECT @UserID = dbo.FetchUserID(@UserName)
+	SELECT @UserID = mgr.FetchUserID(@UserName)
 	
 	INSERT INTO UserClaims
 	(UserID, ClaimID)
@@ -398,7 +399,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.RemoveRoleFromUser
+CREATE PROCEDURE mgr.RemoveRoleFromUser
 (
 	@RoleID AS INT,
 	@UserName AS VARCHAR(25)
@@ -406,7 +407,7 @@ CREATE PROCEDURE dbo.RemoveRoleFromUser
 AS
 BEGIN
 	DECLARE @UserID AS INT
-	SELECT @UserID = dbo.FetchUserID(@UserName)
+	SELECT @UserID = mgr.FetchUserID(@UserName)
 	
 	DELETE UC FROM UserClaims UC
 	INNER JOIN RoleClaims RC
@@ -419,7 +420,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE dbo.CloneUser
+CREATE PROCEDURE mgr.CloneUser
 (
 	@UserSource AS VARCHAR(25),
 	@UserDestination AS VARCHAR(25)
@@ -428,8 +429,8 @@ AS
 BEGIN
 	DECLARE @UserID1 AS INT
 	DECLARE @UserID2 AS INT
-	SELECT @UserID1 = dbo.FetchUserID(@UserSource)
-	SELECT @UserID2 = dbo.FetchUserID(@UserDestination)
+	SELECT @UserID1 = mgr.FetchUserID(@UserSource)
+	SELECT @UserID2 = mgr.FetchUserID(@UserDestination)
 	
 	INSERT INTO UserClaims
 	(UserID, ClaimID)

@@ -22,5 +22,10 @@ namespace GenericWebShop.Controllers
 		{
 			return View();
 		}
+		
+		public ActionResult ViewCart()
+		{
+			return CartView();
+		}
 	}
 }
