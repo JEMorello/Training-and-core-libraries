@@ -7,16 +7,18 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using TestDataProvider.Cores.Authentication;
 
 namespace TestDataProvider.Cores
 {
 	/// <summary>
 	/// Description of Employee.
 	/// </summary>
-	public class Employee :AuthUser
+	public class Employee : AuthUser
 	{
 		public Employee()
 		{
 		}
+		
 	}
 }

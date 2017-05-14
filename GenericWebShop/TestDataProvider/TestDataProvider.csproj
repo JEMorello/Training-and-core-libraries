@@ -43,12 +43,19 @@
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cores\Authentication.cs" />
-    <Compile Include="Cores\AuthUser.cs" />
+    <Compile Include="Cores\Authentication\AuthUser.cs" />
+    <Compile Include="Cores\Authentication\ClaimsAuthentication.cs" />
+    <Compile Include="Cores\Authentication\Encryptor.cs" />
+    <Compile Include="Cores\Authentication\UserRight.cs" />
+    <Compile Include="Cores\Contact.cs" />
     <Compile Include="Cores\Customer.cs" />
     <Compile Include="Cores\Employee.cs" />
     <Compile Include="Cores\Shop.cs" />
@@ -62,11 +69,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Cores\Authentication\AuthData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+    </None>
     <None Include="Service.svc" />
     <None Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cores" />
+    <Folder Include="Cores\Authentication" />
     <Folder Include="DataAccessor" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
