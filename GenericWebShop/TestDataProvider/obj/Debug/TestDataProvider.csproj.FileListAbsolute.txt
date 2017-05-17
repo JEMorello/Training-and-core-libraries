@@ -1,0 +1,1 @@
+C:\Repository\Generic and training\GenericWebShop\TestDataProvider\obj\Debug\TestDataProvider.csprojResolveAssemblyReference.cache

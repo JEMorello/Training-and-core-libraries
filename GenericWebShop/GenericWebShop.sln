@@ -4,7 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # SharpDevelop 5.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericWebShop", "GenericWebShop\GenericWebShop.csproj", "{1C2853DF-B552-465A-B6BB-9CAEB93069E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataProvider", "TestDataProvider\TestDataProvider.csproj", "{6DAF1DFE-F666-4348-B841-D1DB844500C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericBackend", "TestDataProvider\GenericBackend.csproj", "{6DAF1DFE-F666-4348-B841-D1DB844500C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

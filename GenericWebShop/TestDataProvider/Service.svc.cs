@@ -10,7 +10,7 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
-namespace GenericWeebShop.TestDataProvider
+namespace GenericWeebShop.GenericBackend
 {
 	[ServiceContract]
 	public interface IService

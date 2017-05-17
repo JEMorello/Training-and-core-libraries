@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 //using System.Collections.ObjectModel;
 
-namespace TestDataProvider.Cores.Authentication
+namespace GenericBackend.Cores.Authentication
 {
 	/// <summary>
 	/// Description of AuthUser.

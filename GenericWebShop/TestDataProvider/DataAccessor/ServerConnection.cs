@@ -9,9 +9,9 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using  DBConfig = TestDataProvider.DataAccessor.Configuration;
+using  DBConfig = GenericBackend.DataAccessor.Configuration;
 
-namespace TestDataProvider.DataAccessor
+namespace GenericBackend.DataAccessor
 {
 	/// <summary>
 	/// Description of ServerConnection.

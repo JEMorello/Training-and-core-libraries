@@ -1,2 +1,2 @@
 ﻿
-<%@ServiceHost language="C#" Debug="true" Service="TestDataProvider.Service"%>
+<%@ServiceHost language="C#" Debug="true" Service="GenericBackend.Service"%>

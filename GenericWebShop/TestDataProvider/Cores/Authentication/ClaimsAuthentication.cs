@@ -16,7 +16,7 @@ using System.Security.Principal;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Configuration;
 
-namespace TestDataProvider.Cores.Authentication
+namespace GenericBackend.Cores.Authentication
 {
 	/// <summary>
 	/// Description of Authentication.
@@ -28,6 +28,9 @@ namespace TestDataProvider.Cores.Authentication
 		}
 		public bool Login(string Username, string Password)
 		{
+			//standard series, call a db connection
+			//fire login SQL Stored Proceedure
+			//using its return, provide result
 			
 		}
 		public string AuthToken(string Username, DateTime LoginTime)

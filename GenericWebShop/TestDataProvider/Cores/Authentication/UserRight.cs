@@ -9,7 +9,7 @@
 using System;
 using System.Data;
 
-namespace TestDataProvider.Cores.Authentication
+namespace GenericBackend.Cores.Authentication
 {
 	/// <summary>
 	/// generic for claims object for usage in collections and data driving user rights

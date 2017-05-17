@@ -8,7 +8,7 @@
  */
 using System;
 
-namespace TestDataProvider.Cores
+namespace GenericBackend.Cores
 {
 	/// <summary>
 	/// Description of Shop.

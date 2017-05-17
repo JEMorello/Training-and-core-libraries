@@ -9,10 +9,10 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using  DBConfig = TestDataProvider.DataAccessor.Configuration;
+using  DBConfig = GenericBackend.DataAccessor.Configuration;
 
 
-namespace TestDataProvider.DataAccessor
+namespace GenericBackend.DataAccessor
 {
 	/// <summary>
 	/// Description of DataServer.

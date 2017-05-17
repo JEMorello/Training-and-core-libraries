@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.IO;
 
-namespace TestDataProvider.Cores.Authentication
+namespace GenericBackend.Cores.Authentication
 {
 	/// <summary>
 	/// Description of Encryptor.

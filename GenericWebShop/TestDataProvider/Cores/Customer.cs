@@ -8,9 +8,9 @@
  */
 using System;
 using System.Collections.Generic;
-using TestDataProvider.Cores.Authentication;
+using GenericBackend.Cores.Authentication;
 
-namespace TestDataProvider.Cores
+namespace GenericBackend.Cores
 {
 	/// <summary>
 	/// Description of Customer.

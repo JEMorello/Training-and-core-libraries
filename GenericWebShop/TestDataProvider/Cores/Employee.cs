@@ -7,9 +7,9 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using TestDataProvider.Cores.Authentication;
+using GenericBackend.Cores.Authentication;
 
-namespace TestDataProvider.Cores
+namespace GenericBackend.Cores
 {
 	/// <summary>
 	/// Description of Employee.

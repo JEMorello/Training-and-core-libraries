@@ -12,7 +12,7 @@ using System.xml;
 using System.Collections;
 using System.Text;
 
-namespace TestDataProvider.DataAccessor.Configuration
+namespace GenericBackend.DataAccessor.Configuration
 {
 	/// <summary>
 	/// Description of ServerAccessRules.
